@@ -53,8 +53,11 @@ class Matrix {
     return new Matrix(...subtraction);
   }
 
+  transpose() {
+    return new Matrix(...this.columns);
+  }
+
   multiply(multiplier) {
-    console.log(typeof multiplier);
     this.checkRowColumnDimensions(multiplier);
     // Needs the same number of columns as rows
     const multiplication = this.rows.map((row) =>
@@ -66,6 +69,18 @@ class Matrix {
       )
     );
     return new Matrix(...multiplication);
+  }
+
+  ones(shape) {
+    let rows = [];
+    for (let i = 0; i < shape[0]; i++) {
+      let row = [];
+      for (let n = 0; n < shape[1]; n++) {
+        row = [...row, 1];
+      }
+      rows = [...rows, row];
+    }
+    return new Matrix(...rows);
   }
 
   toString() {
@@ -80,4 +95,3 @@ class Matrix {
 module.exports = {
   Matrix: Matrix,
 };
-
