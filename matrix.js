@@ -58,8 +58,8 @@ class Matrix {
   }
 
   multiply(multiplier) {
-    this.checkRowColumnDimensions(multiplier);
     // Needs the same number of columns as rows
+    this.checkRowColumnDimensions(multiplier);
     const multiplication = this.rows.map((row) =>
       multiplier.columns.map((column) =>
         column.reduce((acc, element, index) => {
@@ -67,6 +67,13 @@ class Matrix {
           return acc;
         }, 0)
       )
+    );
+    return new Matrix(...multiplication);
+  }
+
+  scalarMultiply(scalar) {
+    const multiplication = this.rows.map((row) =>
+      row.map((element) => element * scalar)
     );
     return new Matrix(...multiplication);
   }

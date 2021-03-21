@@ -1,31 +1,26 @@
-//const testData = require("./house-test-data.json");
-//console.log(testData);
-// hypothesis = theta transposed * x vector
 const matrixLib = require("./matrix");
 
-const trainWeights = (weights, features, labels, learningRate) => {
-  trainedWeights = weights.columns.map((column, index) => {
-    const feature = features.columns[index];
-    const featureMatrix = new matrixLib.Matrix(feature);
-    const columnMatrix = new matrixLib.Matrix(column);
-    return column.map((weight, weightIndex) => {
-      const deriv =
-        (columnMatrix.multiply(featureMatrix.transpose()) - labels[index]) *
-        feature[weightIndex];
-      console.log(`${deriv}`);
-      return (weight - deriv * learningRate) / feature.length;
-    });
-  });
-  return trainedWeights;
+const hypothesis = (features, weights) => features.multiply(weights);
+
+const trainWeightsVector = (weights, features, labels, learningRate) => {
+  const cost = hypothesis(features, weights).subtract(labels);
+  return features
+    .transpose()
+    .multiply(cost)
+    .scalarMultiply(learningRate / features.rows.length);
 };
 
-const testWeights = new matrixLib.Matrix().ones([4, 1]);
-const features = new matrixLib.Matrix([1], [2], [3], [4]);
-const testLabels = [5, 6, 7, 8];
-const testTrain = trainWeights(testWeights, features, testLabels, 0.01);
-console.log(testTrain);
-const testFeatures = new matrixLib.Matrix([1], [2], [3], [4]);
+// m = number of training samples
+// n = number of features
+// X = matrix of the features m X n
+// theta = matrix of the weights n X 1
+// y = labels m X 1
+
+const theta = new matrixLib.Matrix().ones([2, 1]);
+const x = new matrixLib.Matrix([1, 1], [2, 2], [3, 3], [4, 4]);
+const y = new matrixLib.Matrix([5], [5], [5], [5]);
+const testTrain = trainWeightsVector(theta, x, y, 0.01);
+console.log(testTrain.toString());
 /**
- * This may be working got to remeber that this is really solving for the first label.
  * I think scaling the features may be a useful next implementation.
  */
